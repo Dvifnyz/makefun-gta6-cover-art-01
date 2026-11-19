@@ -1,0 +1,206 @@
+@font-face {
+  font-family: 'Anton';
+  src: url('./fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pacifico';
+  src: url('./fonts/Pacifico-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #12081d;
+  color: #f5eefc;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, #ff7e5f, #ff4d9d 45%, #7b2ff7);
+  color: #fff;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-family: 'Anton', 'Arial Narrow', sans-serif;
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 rgba(20, 6, 32, 0.55);
+}
+
+.topbar p { margin: 2px 0 0; opacity: 0.95; }
+
+.top-actions { display: flex; gap: 8px; }
+
+.controls {
+  padding: 16px 18px 32px;
+  background: #1c0b2e;
+  border-right: 1px solid #3a1a56;
+  overflow-y: auto;
+}
+
+.controls h2 {
+  margin: 20px 0 8px;
+  font-family: 'Anton', 'Arial Narrow', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffd166;
+}
+
+.controls h2:first-child { margin-top: 0; }
+
+.controls label { display: block; margin: 8px 0; }
+
+.controls input[type="text"],
+.controls select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid #5b2d82;
+  border-radius: 6px;
+  background: #2a1140;
+  color: #fff;
+  font: inherit;
+}
+
+.controls input[type="range"] { width: 100%; }
+
+button {
+  font: inherit;
+  color: #fff;
+  background: #5b2d82;
+  border: 1px solid #7b4ba6;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: #6f3a9e; }
+button:disabled { opacity: 0.45; cursor: default; }
+
+.file-label {
+  display: block;
+  padding: 10px 12px;
+  border: 2px dashed #ff4d9d;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(255, 77, 157, 0.08);
+}
+
+.file-label input { display: none; }
+
+#samples { width: 100%; margin-top: 8px; }
+
+.tray {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  min-height: 64px;
+}
+
+.thumb {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid #5b2d82;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+}
+
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb:hover { border-color: #ffd166; }
+
+.hint { color: #c9a8e0; font-size: 13px; }
+
+#fillAll { width: 100%; }
+
+.picker { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+
+.picker button { padding: 6px 10px; font-size: 13px; }
+
+.picker button.on {
+  background: #ff4d9d;
+  border-color: #ffd166;
+  color: #fff;
+}
+
+.panel-label { color: #ffd166; font-weight: 600; }
+
+.check { display: block; }
+
+.exports { display: grid; gap: 8px; margin-top: 10px; }
+
+.exports button { background: #ff4d9d; border-color: #ff7e5f; font-weight: 600; }
+.exports button:hover:not(:disabled) { background: #ff5ca8; }
+
+#exportAll { background: #ffd166; border-color: #ffe259; color: #2a1140; }
+#exportAll:hover:not(:disabled) { background: #ffe259; }
+
+#status { min-height: 20px; color: #90e0ef; }
+
+.fineprint { color: #9a7bb5; font-size: 12px; }
+
+.stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(1200px 500px at 80% -10%, rgba(255, 126, 95, 0.35), transparent 60%),
+    radial-gradient(900px 500px at 0% 110%, rgba(123, 47, 247, 0.35), transparent 60%),
+    #12081d;
+}
+
+#preview {
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  border-radius: 4px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  cursor: crosshair;
+  background: #2b1055;
+}
+
+/* Shot scenes: the cover fills the window, no editor chrome. */
+body.shot { background: #000; }
+body.shot .app { display: block; min-height: 0; }
+body.shot .topbar,
+body.shot .controls { display: none; }
+body.shot .stage { padding: 0; background: #000; display: block; }
+body.shot #preview {
+  display: block;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: default;
+  margin: 0 auto;
+}
