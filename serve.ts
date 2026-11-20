@@ -1,37 +1,67 @@
-// Cover Coast — tiny static server for local testing only. Serves app/ at
-// http://localhost:8080 so the app runs exactly as a static host serves it.
-// Usage: node serve.ts [port]
+// A tiny static server for app/ (Node 22, standard library only), so the
+// entry can be tried locally without a build step: `node serve.ts` serves
+// app/ on http://localhost:8080. It sends the MIME types an offline web app
+// needs, refuses any path outside app/, and otherwise does nothing clever:
+// this is a development convenience, not a web server for the internet.
+import { createReadStream, statSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
-import { join, extname } from 'node:path';
+import { extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('./app', import.meta.url));
-const port = Number(process.argv[2] ?? 8080);
-const types = {
-  '.html': 'text/html',
-  '.css': 'text/css',
-  '.js': 'text/javascript',
-  '.mjs': 'text/javascript',
-  '.ttf': 'font/ttf',
-  '.jpg': 'image/jpeg',
-  '.png': 'image/png',
-};
+const root = resolve(fileURLToPath(new URL('./app', import.meta.url)));
+const requestedPort = Number(process.argv[process.argv.indexOf('--port') + 1]);
+const port = Number.isInteger(requestedPort) && requestedPort > 0 && requestedPort < 65536
+  ? requestedPort
+  : 8080;
 
-createServer(async (req, res) => {
-  const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  const file = join(root, path === '/' ? 'index.html' : path);
-  if (!file.startsWith(root)) {
-    res.writeHead(403);
-    res.end();
+const TYPES = new Map([
+  ['.html', 'text/html; charset=utf-8'],
+  ['.js', 'text/javascript; charset=utf-8'],
+  ['.mjs', 'text/javascript; charset=utf-8'],
+  ['.css', 'text/css; charset=utf-8'],
+  ['.json', 'application/json; charset=utf-8'],
+  ['.png', 'image/png'],
+  ['.jpg', 'image/jpeg'],
+  ['.jpeg', 'image/jpeg'],
+  ['.webp', 'image/webp'],
+  ['.svg', 'image/svg+xml'],
+  ['.woff2', 'font/woff2'],
+  ['.woff', 'font/woff'],
+  ['.ttf', 'font/ttf'],
+  ['.otf', 'font/otf'],
+  ['.txt', 'text/plain; charset=utf-8'],
+]);
+
+createServer((request, response) => {
+  const url = new URL(request.url ?? '/', 'http://localhost');
+  let pathname;
+  try {
+    pathname = decodeURIComponent(url.pathname);
+  } catch {
+    response.writeHead(400).end('bad request');
     return;
   }
-  try {
-    const data = await readFile(file);
-    res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
-    res.end(data);
-  } catch {
-    res.writeHead(404);
-    res.end('not found');
+  if (pathname.endsWith('/')) pathname += 'index.html';
+  const file = resolve(join(root, normalize(pathname)));
+  if (file !== root && !file.startsWith(root + sep)) {
+    response.writeHead(403).end('forbidden');
+    return;
   }
-}).listen(port, () => console.log(`Cover Coast at http://localhost:${port}`));
+  let size;
+  try {
+    const stats = statSync(file);
+    if (!stats.isFile()) throw new Error('not a file');
+    size = stats.size;
+  } catch {
+    response.writeHead(404).end('not found');
+    return;
+  }
+  response.writeHead(200, {
+    'content-type': TYPES.get(extname(file).toLowerCase()) ?? 'application/octet-stream',
+    'content-length': size,
+    'cache-control': 'no-store',
+  });
+  createReadStream(file).pipe(response);
+}).listen(port, '127.0.0.1', () => {
+  console.log(`app/ is on http://localhost:${port}`);
+});

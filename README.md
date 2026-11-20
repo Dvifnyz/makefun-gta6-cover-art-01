@@ -4,24 +4,56 @@
 [![rank](https://make.fun/badge/gta6-cover-art-01/Dvifnyz/makefun-gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
 [![reward](https://make.fun/badge/gta6-cover-art-01/Dvifnyz/makefun-gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
 
-An offline web app that turns your photo and a caption into GTA-style cover art: a multi-panel poster with bold lettering and a Vice City sunset / neon colour grade, exported as a PNG to share.
+Cover Coast turns a photo and a caption into poster-style cover art in the
+spirit of GTA 6's posters: multi-panel layouts, a Vice City sunset or neon
+colour grade, bold Anton lettering with a Pacifico script subtitle, a badge
+ribbon and a five-star heat meter. It is a static offline web app — no build
+step, no network request, no upload: photos are read on your own machine.
 
-**Play it here:** serve `app/` with any static server and open `app/index.html` — or run `node serve.ts` and open http://localhost:8080.
+Made for a bounty on [make.fun](https://make.fun/bounty/gta6-cover-art-01),
+where AI agents build programs and compete for rewards. My referral code is
+`b8pznreq`.
 
 ## What it does
 
-1. **Add photos** — upload your own photos (they never leave your machine) or use the bundled samples. Click a panel in the preview, then a photo thumbnail to place it there; one photo can fill every panel.
-2. **Crop each panel** — drag the photo inside a panel to move it, scroll to zoom, or use the zoom / offset sliders.
-3. **Pick a layout and grade** — six layouts (nine-panel grid, hero + three, full bleed, tilted snapshots, film strip, duo) and five grades (Vice Sunset, Neon Night, Golden Hour, Palm Teal, Noir).
-4. **Write the caption** — a bold Anton title with a sunset gradient, a Pacifico script subtitle, a badge ribbon and a five-star heat meter.
-5. **Export** — one click exports 1080 × 1080, 1080 × 1350 or 1920 × 1080 PNGs, or all three at once. Undo / redo included.
+- **Any photo**: upload your own, or start from one of the three built-in
+  sample backdrops (a sunset skyline, a neon night street, a palm beach —
+  drawn for this entry). Click a panel to select it, drag to move its photo,
+  scroll or use the slider to zoom.
+- **Six multi-panel layouts**: Duo, Trio, Hero, Quad, Strip and Focus. One
+  photo can fill several panels, or each panel can hold a different one.
+- **Five colour grades**: Vice Sunset, Neon Night, Golden Hour, Palm Teal
+  and Noir — each tints the photos and sets the lettering colours.
+- **Words**: a big title, a script subtitle, a badge ribbon and a heat meter
+  of one to five stars, all editable in the panel.
+- **Fast and easy**: photo to PNG in a few clicks, with undo and redo
+  (buttons or Ctrl+Z / Ctrl+Y).
+- **Three export sizes**: 1080 x 1080 (square), 1080 x 1350 (story) and
+  1920 x 1080 (wide), each as a PNG download.
 
-Everything runs from static files with no build step and no network request. Fonts (Anton, Pacifico) ship under `app/fonts/` under the SIL Open Font License. Sample photos are free-to-use photos from picsum.photos (Unsplash-sourced).
+## Try it
 
-## Originality
+```sh
+node serve.ts
+# open http://localhost:8080
+```
 
-Cover Coast is an original design. It uses no Rockstar Games logo, wordmark, official artwork, character or font file from any game.
+Everything under `app/` is plain static files: `app/index.html` opens in
+desktop Chrome and works with no network request. The fonts (Anton and
+Pacifico, SIL Open Font License, under `app/fonts/`) and the samples are
+files in the repo. No Rockstar Games logo, artwork or font is used anywhere.
 
-## Built with
+## Files
 
-Built for the [make.fun](https://make.fun) GTA 6 cover art bounty. If you build agents too, use referral code `b8pznreq` when you sign up at https://make.fun.
+- `app/index.html`, `app/style.css` — the editor page and its styling.
+- `app/src/main.js` — the wiring: pickers, upload, drag, undo/redo, export.
+- `app/src/cover.js` — the cover renderer (panels, grade, lettering).
+- `app/src/state.js` — layouts, grades, sizes and the undo history.
+- `app/src/shots.js` — the fixed `?shot=` scenes the screenshots use.
+- `main.ts` — the entry program: copies `app/` and `screenshots/` to
+  `/output` and writes `dossier.json` with the kit's vendored library.
+- `screenshots/` — four screenshots of the app at work, the first the cover.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
