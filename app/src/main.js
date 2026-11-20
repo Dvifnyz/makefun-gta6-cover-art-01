@@ -2,7 +2,7 @@
 // Photos are read on this machine only (FileReader / object URLs), never
 // uploaded anywhere. The same drawCover engine paints the live preview and
 // the exported PNGs, so what you see is what you share.
-import { drawCover, LAYOUTS, GRADES, layoutGeometry } from './cover.js';
+import { drawCover, LAYOUTS, GRADES } from './cover.js';
 import { loadImage, runShot, SAMPLES } from './shots.js';
 
 const $ = (id) => document.getElementById(id);
@@ -47,7 +47,6 @@ let selected = 0;
 let geometry = null;
 let undoStack = [];
 let redoStack = [];
-let shotMode = null;
 
 function snapshot() {
   return JSON.stringify(state);
@@ -157,16 +156,6 @@ function setLayout(id) {
   }
   if (selected >= n) selected = 0;
   if (id === 'nine' && selected === 4) selected = 0;
-}
-
-function selectPanel(i) {
-  if (state.layout === 'nine' && i === 4) {
-    setStatus('The centre cell is the title block — pick a photo panel around it.');
-    return;
-  }
-  selected = i;
-  syncControls();
-  redraw();
 }
 
 // --- photos -----------------------------------------------------------------
@@ -403,7 +392,6 @@ $('exportAll').addEventListener('click', async () => {
 
 const shot = new URLSearchParams(location.search).get('shot');
 if (shot) {
-  shotMode = shot;
   // Cover shots fill the window with the cover alone; the editor shot keeps
   // the full editor chrome so the screenshot shows the app at work.
   if (shot !== 'editor') document.body.classList.add('shot');

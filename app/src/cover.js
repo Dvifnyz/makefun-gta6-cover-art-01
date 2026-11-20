@@ -16,27 +16,27 @@ export const LAYOUTS = {
 export const GRADES = {
   sunset: {
     name: 'Vice Sunset', wash: ['#ff9a3d', '#ff4d6d', '#7b2ff7'],
-    washAlpha: 0.40, bottom: '#1c0a2e', title: ['#ffe259', '#ff7e5f', '#ff4d9d'],
+    washAlpha: 0.40, title: ['#ffe259', '#ff7e5f', '#ff4d9d'],
     accent: '#ffd166',
   },
   neon: {
     name: 'Neon Night', wash: ['#00f5d4', '#ff2e88', '#7b2ff7'],
-    washAlpha: 0.44, bottom: '#060b26', title: ['#7ef9ff', '#ff5ce1', '#b967ff'],
+    washAlpha: 0.44, title: ['#7ef9ff', '#ff5ce1', '#b967ff'],
     accent: '#00f5d4',
   },
   golden: {
     name: 'Golden Hour', wash: ['#ffd76a', '#ff9a3d', '#c96f2e'],
-    washAlpha: 0.30, bottom: '#2a1503', title: ['#fff3b0', '#ffc46b', '#ff8c42'],
+    washAlpha: 0.30, title: ['#fff3b0', '#ffc46b', '#ff8c42'],
     accent: '#ffe259',
   },
   teal: {
     name: 'Palm Teal', wash: ['#2ec4b6', '#118ab2', '#073b4c'],
-    washAlpha: 0.34, bottom: '#04222e', title: ['#caf0f8', '#90e0ef', '#48cae4'],
+    washAlpha: 0.34, title: ['#caf0f8', '#90e0ef', '#48cae4'],
     accent: '#90e0ef',
   },
   noir: {
     name: 'Noir', wash: ['#e5e5e5', '#8d99ae', '#2b2d42'],
-    washAlpha: 0.22, bottom: '#0d0d0d', title: ['#ffffff', '#e0e0e0', '#ff3b30'],
+    washAlpha: 0.22, title: ['#ffffff', '#e0e0e0', '#ff3b30'],
     accent: '#ff3b30',
   },
 };
